@@ -31,7 +31,6 @@ set(ANALYZER
 	analyzer/scanner.cpp
 	analyzer/utils.cpp
 	analyzer/ngram.cpp
-	analyzer/vigdec.cpp
 )
 
 set(TEST 
@@ -45,9 +44,13 @@ add_library(cryptor SHARED ${CRYPTO})
 
 include_directories(test/include)
 
+add_library(vigdec SHARED ${ANALYZER})
+target_link_libraries(vigdec PRIVATE cryptor)
+
+add_executable(vigdec_cli analyzer/vigdec.cpp)
+target_link_libraries(vigdec_cli PRIVATE vigdec)
+
 add_executable(tester ${TEST})
-add_executable(vigdec ${ANALYZER})
-target_link_libraries(vigdec cryptor)
 if (CMAKE_THREAD_LIBS_INIT)
 	target_link_libraries(tester cryptor "${CMAKE_THREAD_LIBS_INIT}")
 endif()
