@@ -22,6 +22,7 @@ qt_add_qml_module(${PROJECT_NAME}
         VERSION 1.0
         QML_FILES
             view/Main.qml
+            view/Decoder.qml
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
