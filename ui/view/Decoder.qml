@@ -1,43 +1,92 @@
+import QtCore
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Controls.Basic
+import QtQuick.Dialogs
+import VigdecUi
 
 Pane {
-    anchors.fill: parent
+    id: rootPane
+    property string filePath: ""
+    property bool filePathLoaded: false
 
     ColumnLayout {
         anchors.fill: parent
 
-        Column {
+        ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            clip: true
 
             ScrollView {
                 id: view
-                width: parent.width
-                height: parent.height * 0.6
                 contentHeight: encodedText.height
+
+                Layout.fillHeight: true
+                Layout.fillWidth: true
 
                 TextArea {
                     id: encodedText
                     textFormat: Text.MarkdownText
                     font.pointSize: 15
-                    text: ""
 
-                    Text {
-                        anchors.fill: parent
-                        anchors.leftMargin: parent.leftPadding
-                        anchors.rightMargin: parent.rightPadding
-                        anchors.topMargin: parent.topPadding
-                        anchors.bottomMargin: parent.bottomPadding
+                    placeholderText: "Enter encoded text here..."
+                }
+            }
 
-                        text: "Enter encoded text here..."
+            RowLayout {
+                Button {
+                    text: "Load"
+                    font.pointSize: 15
 
-                        color: Qt.darker(parent.color)
-                        font.pointSize: parent.font.pointSize
-                        textFormat: parent.textFormat
-                        visible: !parent.text
+                    onClicked: fileDialog.open()
+                }
+                Button {
+                    text: "Unload"
+                    font.pointSize: 15
+
+                    action: unloadAction
+                }
+
+                ScrollView {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: filePathLabel.height
+                    contentWidth: filePathLabel.width
+
+                    ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                    ScrollBar.vertical.policy: ScrollBar.AlwaysOff
+
+                    clip: true
+
+                    TextArea {
+                        id: filePathLabel
+                        anchors.verticalCenter: parent.verticalCenter
+                        padding: 0
+
+                        textFormat: Text.MarkdownText
+                        font.pointSize: 15
+
+                        selectByMouse: true
+                        readOnly: true
+
+                        text: rootPane.filePath
+
+                        placeholderText: "File is not loaded"
                     }
+                }
+            }
+
+            RowLayout {
+                Label {
+                    text: "Heap Size: "
+                    font.pointSize: 15
+                }
+                TextField {
+                    Layout.fillWidth: true
+
+                    text: "100"
+                    font.pointSize: 15
                 }
             }
         }
@@ -48,6 +97,33 @@ Pane {
             Layout.minimumHeight: 40
             text: "DECODE"
             font.pointSize: 18
+        }
+    }
+
+    DecoderService {
+        id: decoderService
+    }
+
+    FileDialog {
+        id: fileDialog
+        currentFolder: StandardPaths.standardLocations(StandardPaths.DocumentsLocation)[0]
+        acceptLabel: "Load"
+
+        onAccepted: {
+            let path = fileDialog.selectedFile.toString();
+            path = path.replace(/^(file:\/{3})/,"");
+            const cleanPath = decodeURIComponent(path);
+            rootPane.filePath = cleanPath;
+            rootPane.filePathLoaded = true
+        }
+    }
+
+    Action {
+        id: unloadAction
+
+        onTriggered: {
+            rootPane.filePath = ""
+            rootPane.filePathLoaded = false
         }
     }
 }

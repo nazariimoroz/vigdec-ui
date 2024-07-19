@@ -23,11 +23,15 @@ qt_add_qml_module(${PROJECT_NAME}
         QML_FILES
             view/Main.qml
             view/Decoder.qml
+        SOURCES
+            services/DecoderService.h
+            services/DecoderService.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
         .
-        ./view/)
+        ./view/
+        ./services/)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Quick Qt6::Gui Qt6::Core Qt6::QuickControls2)
 target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
