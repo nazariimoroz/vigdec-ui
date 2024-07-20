@@ -46,6 +46,7 @@ include_directories(test/include)
 
 add_library(vigdec SHARED ${ANALYZER})
 target_link_libraries(vigdec PRIVATE cryptor)
+target_include_directories(vigdec PUBLIC ./analyzer/)
 
 add_executable(vigdec_cli analyzer/vigdec.cpp)
 target_link_libraries(vigdec_cli PRIVATE vigdec)
