@@ -7,7 +7,11 @@ import QtQuick.Controls.Basic
 Pane {
     id: rootPane
 
+    signal viewResults(key: string, plaintext: string)
+
     property bool finished: false
+    property string key
+    property string plaintext
 
     function addMessage(message) {
         encodedText.text += message;
@@ -48,6 +52,8 @@ Pane {
             font.pointSize: 18
 
             enabled: rootPane.finished
+
+            onClicked: rootPane.viewResults(rootPane.key, rootPane.plaintext)
         }
     }
 }

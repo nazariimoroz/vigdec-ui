@@ -26,6 +26,7 @@ qt_add_qml_module(${PROJECT_NAME}
             view/Main.qml
             view/Decoder.qml
             view/Processing.qml
+            view/Result.qml
         SOURCES
             services/DecoderService.h
             services/DecoderService.cpp

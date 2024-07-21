@@ -35,7 +35,7 @@ ApplicationWindow {
             }
 
             Rectangle {
-                color: Qt.rgba(0,0,0,0)
+                color: Qt.rgba(0, 0, 0, 0)
                 Layout.preferredWidth: backButton.width
                 Layout.fillHeight: true
             }
@@ -54,13 +54,28 @@ ApplicationWindow {
     }
 
     Component {
+        id: decoderPageComponent
+
+        App.Decoder {
+            decoderService.onBegin: {
+                mainStackView.push(processingPageComponent)
+            }
+        }
+    }
+
+    Component {
         id: processingPageComponent
 
         App.Processing {
             id: processing
 
+            onViewResults: (key, plaintext) => {
+                mainStackView.replace(resultPageComponent, {"key": key, "plaintext": plaintext})
+            }
+
             Connections {
                 target: applicationWindow.decoder.decoderService
+
                 function onError(message) {
                     processing.addError(message)
                 }
@@ -70,13 +85,24 @@ ApplicationWindow {
                 }
 
                 function onStatisticFileLoaded() {
-                    processing.addMessage("Statistics file was successfully loaded")
+                    processing.addMessage("Statistic files was successfully loaded")
                 }
 
                 function onDecoded(key, plaintext) {
                     processing.addMessage("Decoding was successfully completed")
+                    processing.key = key
+                    processing.plaintext = plaintext
+                    processing.finished = true
                 }
             }
+        }
+    }
+
+    Component {
+        id: resultPageComponent
+
+        App.Result {
+            id: result
         }
     }
 }
