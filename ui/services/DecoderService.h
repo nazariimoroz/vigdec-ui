@@ -25,6 +25,7 @@ public:
 
 signals:
     void begin();
+    void encodedFileLoaded();
     void statisticFileLoaded();
     void decoded(QString key, QString plaintext);
     void error(QString messaga);

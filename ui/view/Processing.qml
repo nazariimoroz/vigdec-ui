@@ -7,6 +7,16 @@ import QtQuick.Controls.Basic
 Pane {
     id: rootPane
 
+    property bool finished: false
+
+    function addMessage(message) {
+        encodedText.text += message;
+    }
+
+    function addError(error) {
+        encodedText.text += "<font color=\"#9c1111\">" + error + "</font>";
+    }
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -19,8 +29,11 @@ Pane {
 
             TextArea {
                 id: encodedText
-                textFormat: Text.MarkdownText
-                font.pointSize: 15
+                textFormat: Text.RichText
+                font.pointSize: 13
+                padding: 0
+
+                text: "Decoding begins"
 
                 selectByMouse: true
                 readOnly: true
@@ -34,7 +47,7 @@ Pane {
             text: "VIEW RESULT"
             font.pointSize: 18
 
-            enabled: false
+            enabled: rootPane.finished
         }
     }
 }

@@ -57,11 +57,24 @@ ApplicationWindow {
         id: processingPageComponent
 
         App.Processing {
+            id: processing
 
             Connections {
                 target: applicationWindow.decoder.decoderService
                 function onError(message) {
-                    console.log("TEST")
+                    processing.addError(message)
+                }
+
+                function onEncodedFileLoaded() {
+                    processing.addMessage("Encoded file was successfully loaded")
+                }
+
+                function onStatisticFileLoaded() {
+                    processing.addMessage("Statistics file was successfully loaded")
+                }
+
+                function onDecoded(key, plaintext) {
+                    processing.addMessage("Decoding was successfully completed")
                 }
             }
         }

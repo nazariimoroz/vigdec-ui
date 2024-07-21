@@ -112,8 +112,6 @@ Pane {
         filePathLoaded: rootPane.filePathLoaded
         encodedText: encodedText.text
         heapSize: heapSizeTextField.text
-
-        onDecoded: console.log("WORK")
     }
 
     FileDialog {

@@ -24,6 +24,7 @@ void DecoderService::decode()
     try
     {
         decoder = std::make_unique<analyzer::Analyzer>(filePath);
+        emit encodedFileLoaded();
     } catch (const std::exception& ex)
     {
         emit error(ex.what());

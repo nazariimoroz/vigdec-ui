@@ -40,12 +40,15 @@ void DecoderThread::run()
 
             emit decoded(QString(QByteArray(resultKey.data(), resultKey.size())),
                 QString(QByteArray(resultPlain.data(), resultPlain.size())));
+            return;
 
         } else {
             emit error("Key not found. It was too hard 4 me, mb try bigger heap size :)");
+            return;
         }
 
         emit error("Unknown error");
+        return;
     } catch (const std::runtime_error& ex)
     {
         emit error(ex.what());
