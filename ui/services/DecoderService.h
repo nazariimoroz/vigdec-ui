@@ -15,7 +15,7 @@ class DecoderService : public QObject {
 
     Q_PROPERTY(QString  filePath        MEMBER m_filePath)
     Q_PROPERTY(bool     filePathLoaded  MEMBER m_filePathLoaded)
-    Q_PROPERTY(QString  decodedText     MEMBER m_decodedText)
+    Q_PROPERTY(QString  encodedText     MEMBER m_encodedText)
     Q_PROPERTY(int      heapSize        MEMBER m_heapSize)
 
 public:
@@ -24,14 +24,15 @@ public:
     Q_INVOKABLE void decode();
 
 signals:
-    void onStatisticFileLoaded();
-    void onDecoded(QString key, QString plaintext);
-    void onError(QString messaga);
+    void begin();
+    void statisticFileLoaded();
+    void decoded(QString key, QString plaintext);
+    void error(QString messaga);
 
 protected:
     QString m_filePath;
     bool m_filePathLoaded;
-    QString m_decodedText;
+    QString m_encodedText;
     int m_heapSize;
 };
 

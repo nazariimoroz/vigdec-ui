@@ -18,30 +18,36 @@ DecoderThread::~DecoderThread()
 
 void DecoderThread::run()
 {
-    m_decoder->load_statistic_file("english_bigrams.txt",
-                                    "english_trigrams.txt",
-                                    "english_quadgrams.txt");
+    try
+    {
+        m_decoder->load_statistic_file("english_bigrams.txt",
+                                        "english_trigrams.txt",
+                                        "english_quadgrams.txt");
 
-    emit onStatisticFileLoaded();
+        emit statisticFileLoaded();
 
-    m_decoder->proccess();
+        m_decoder->proccess();
 
-    std::vector < char > resultKey = m_decoder->get_key();
-    std::vector < char > resultPlain = m_decoder->get_plain_text();
+        std::vector < char > resultKey = m_decoder->get_key();
+        std::vector < char > resultPlain = m_decoder->get_plain_text();
 
-    if (resultKey.size() > 0) {
-        if (resultKey.size() == 2) {
-            if (resultKey[0] == resultKey[1]) {
-                resultKey.pop_back();
+        if (resultKey.size() > 0) {
+            if (resultKey.size() == 2) {
+                if (resultKey[0] == resultKey[1]) {
+                    resultKey.pop_back();
+                }
             }
+
+            emit decoded(QString(QByteArray(resultKey.data(), resultKey.size())),
+                QString(QByteArray(resultPlain.data(), resultPlain.size())));
+
+        } else {
+            emit error("Key not found. It was too hard 4 me, mb try bigger heap size :)");
         }
 
-        emit onDecoded(QString(QByteArray(resultKey.data(), resultKey.size())),
-            QString(QByteArray(resultPlain.data(), resultPlain.size())));
-
-    } else {
-        emit onError("Key not found. It was too hard 4 me, mb try bigger heap size :)");
+        emit error("Unknown error");
+    } catch (const std::runtime_error& ex)
+    {
+        emit error(ex.what());
     }
-
-    emit onError("Unknown error");
 }

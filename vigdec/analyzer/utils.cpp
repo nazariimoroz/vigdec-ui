@@ -32,8 +32,8 @@ namespace analyzer {
   void Utils::file_open(std::ifstream & inStream, std::string fileName) {
     inStream.open(fileName.c_str());
     if (inStream.fail()) {
-      std::cout << TAG << "open failed for " << fileName << std::endl;
-      exit(0);
+      //std::cout << TAG << "open failed for " << fileName << std::endl;
+      throw std::runtime_error((std::stringstream() << TAG << "open failed for " << fileName).str());
     }
   }
 
@@ -41,8 +41,9 @@ namespace analyzer {
   void Utils::file_open(std::ofstream & outStream, std::string fileName) {
     outStream.open(fileName.c_str());
     if (outStream.fail()) {
-      std::cout << TAG << "open failed for " << fileName << std::endl;
-      exit(0);
+      //std::cout << TAG << "open failed for " << fileName << std::endl;
+      //exit(0);
+      throw std::runtime_error((std::stringstream() << TAG << "open failed for " << fileName).str());
     }
   }
 
@@ -86,10 +87,11 @@ namespace analyzer {
     for (std::string::iterator iter = input.begin(); iter != input.end(); ++iter) {
       int digit = digits.find( * iter);
       if ((0 > digit) || (9 < digit)) {
-        Utils::logStream << TAG << "ERROR: string '" << input <<
-          "' not a number" << std::endl;
-        Utils::logStream.flush();
-        exit(0);
+        //Utils::logStream << TAG << "ERROR: string '" << input <<
+        //  "' not a number" << std::endl;
+        //Utils::logStream.flush();
+        //exit(0);
+        throw std::runtime_error((std::stringstream() << TAG << "ERROR: string '" << input << "' not a number").str());
       }
       returnValue = 10 * returnValue + digit;
     }
@@ -107,10 +109,11 @@ namespace analyzer {
     for (std::string::iterator iter = input.begin(); iter != input.end(); ++iter) {
       int digit = digits.find( * iter);
       if ((0 > digit) || (9 < digit)) {
-        Utils::logStream << TAG << "ERROR: string '" << input <<
-          "' not a number" << std::endl;
-        Utils::logStream.flush();
-        exit(0);
+        //Utils::logStream << TAG << "ERROR: string '" << input <<
+        //  "' not a number" << std::endl;
+        //Utils::logStream.flush();
+        //exit(0);
+        throw std::runtime_error((std::stringstream() << TAG << "ERROR: string '" << input << "' not a number").str());
       }
       returnValue = 10 * returnValue + digit;
     }

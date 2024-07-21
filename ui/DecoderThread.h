@@ -22,9 +22,9 @@ public:
     void run() override;
 
 signals:
-    void onStatisticFileLoaded();
-    void onDecoded(QString key, QString plaintext);
-    void onError(QString messaga);
+    void statisticFileLoaded();
+    void decoded(QString key, QString plaintext);
+    void error(QString messaga);
 
 protected:
     std::unique_ptr<analyzer::Analyzer> m_decoder;

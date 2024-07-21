@@ -11,6 +11,8 @@ Pane {
     property string filePath: ""
     property bool filePathLoaded: false
 
+    property alias decoderService: _decoderService
+
     ColumnLayout {
         anchors.fill: parent
 
@@ -83,6 +85,7 @@ Pane {
                     font.pointSize: 15
                 }
                 TextField {
+                    id: heapSizeTextField
                     Layout.fillWidth: true
 
                     text: "100"
@@ -97,11 +100,20 @@ Pane {
             Layout.minimumHeight: 40
             text: "DECODE"
             font.pointSize: 18
+
+            onClicked: decoderService.decode()
         }
     }
 
     DecoderService {
-        id: decoderService
+        id: _decoderService
+
+        filePath: rootPane.filePath
+        filePathLoaded: rootPane.filePathLoaded
+        encodedText: encodedText.text
+        heapSize: heapSizeTextField.text
+
+        onDecoded: console.log("WORK")
     }
 
     FileDialog {

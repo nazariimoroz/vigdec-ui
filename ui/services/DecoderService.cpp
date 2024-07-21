@@ -13,7 +13,22 @@ DecoderService::DecoderService(QObject* parent)
 
 void DecoderService::decode()
 {
-    auto decoder = std::make_unique<analyzer::Analyzer>(m_filePath.toStdString());
+    std::string filePath;
+    if(m_filePathLoaded)
+    {
+        filePath = m_filePath.toStdString();
+    }
+
+    emit begin();
+    std::unique_ptr<analyzer::Analyzer> decoder;
+    try
+    {
+        decoder = std::make_unique<analyzer::Analyzer>(filePath);
+    } catch (const std::exception& ex)
+    {
+        emit error(ex.what());
+        return;
+    }
     decoder->HEAPSIZE = m_heapSize;
 
     auto decoderThread = new DecoderThread(std::move(decoder), this);
@@ -21,10 +36,12 @@ void DecoderService::decode()
     connect(decoderThread, &DecoderThread::finished,
         decoderThread, &DecoderThread::deleteLater);
 
-    connect(decoderThread, &DecoderThread::onStatisticFileLoaded,
-        this, &DecoderService::onStatisticFileLoaded);
-    connect(decoderThread, &DecoderThread::onDecoded,
-        this, &DecoderService::onDecoded);
-    connect(decoderThread, &DecoderThread::onError,
-        this, &DecoderService::onError);
+    connect(decoderThread, &DecoderThread::statisticFileLoaded,
+        this, &DecoderService::statisticFileLoaded);
+    connect(decoderThread, &DecoderThread::decoded,
+        this, &DecoderService::decoded);
+    connect(decoderThread, &DecoderThread::error,
+        this, &DecoderService::error);
+
+    decoderThread->start();
 }
