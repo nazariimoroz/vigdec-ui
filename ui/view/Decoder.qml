@@ -104,6 +104,8 @@ Pane {
 
                     text: "100"
                     font.pointSize: 15
+
+                    validator: IntValidator {bottom: 1; top: 1000}
                 }
             }
         }

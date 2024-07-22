@@ -47,7 +47,7 @@ void DecoderService::decode()
     }
     decoder->HEAPSIZE = m_heapSize;
 
-    auto decoderThread = new DecoderThread(std::move(decoder), this);
+    const auto decoderThread = new DecoderThread(std::move(decoder), this);
 
     connect(decoderThread, &DecoderThread::finished,
         decoderThread, &DecoderThread::deleteLater);

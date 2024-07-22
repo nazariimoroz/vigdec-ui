@@ -18,7 +18,10 @@ ApplicationWindow {
 
             ToolButton {
                 id: backButton
-                text: mainStackView.depth > 1 ? "‹" : " "
+                text: mainStackView.depth <= 1 ? " "
+                        : mainStackView.currentItem.forbidBack ? " "
+                            : "‹"
+
                 onClicked: mainStackView.pop()
             }
 

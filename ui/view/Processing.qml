@@ -14,6 +14,8 @@ Pane {
     property string key
     property string plaintext
 
+    property bool forbidBack: true
+
     function addMessage(message) {
         encodedText.text += message;
     }
@@ -27,6 +29,8 @@ Pane {
 
         function onError(message) {
             rootPane.addError(message)
+
+            rootPane.forbidBack = false
         }
 
         function onEncodedFileLoaded() {
@@ -41,7 +45,9 @@ Pane {
             rootPane.addMessage("Decoding was successfully completed")
             rootPane.key = key
             rootPane.plaintext = plaintext
+
             rootPane.finished = true
+            rootPane.forbidBack = false
         }
     }
 

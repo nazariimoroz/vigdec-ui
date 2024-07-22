@@ -14,7 +14,6 @@ Pane {
         anchors.fill: parent
 
         Label {
-            textFormat: Text.RichText
             font.pointSize: 13
 
             text: "Key: "
@@ -26,7 +25,6 @@ Pane {
 
             TextArea {
                 id: keyText
-                textFormat: Text.RichText
                 font.pointSize: 13
                 padding: 0
 
@@ -38,7 +36,6 @@ Pane {
         }
 
         Label {
-            textFormat: Text.RichText
             font.pointSize: 13
 
             text: "Plaintext: "
@@ -50,7 +47,6 @@ Pane {
 
             TextArea {
                 id: plaintextText
-                textFormat: Text.RichText
                 font.pointSize: 13
                 padding: 0
 
