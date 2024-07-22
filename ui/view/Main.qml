@@ -2,13 +2,12 @@ import QtQml
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Controls.Basic
 import "." as App
 
 ApplicationWindow {
     id: applicationWindow
-    height: 400
-    width: 400
+    height: 500
+    width: 700
     title: "Vigenère decoder"
     visible: true
 
@@ -18,9 +17,9 @@ ApplicationWindow {
 
             ToolButton {
                 id: backButton
-                text: mainStackView.depth <= 1 ? " "
-                        : mainStackView.currentItem.forbidBack ? " "
-                            : "‹"
+                text: enabled ? "‹" : " "
+
+                enabled: mainStackView.depth > 1 && !mainStackView.currentItem.forbidBack
 
                 onClicked: mainStackView.pop()
             }

@@ -8,21 +8,16 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
+#include <QStyleHints>
 
 int main(int argc, char* argv[])
 {
     QGuiApplication app(argc, argv);
 
-    //QQuickStyle::setStyle("Universal");
-
-    /*
-    QDirIterator it(":", QDirIterator::Subdirectories);
-    while (it.hasNext()) {
-        qDebug() << it.next();
-    }*/
+    QQuickStyle::setStyle("Basic");
+    QGuiApplication::setFont(QFont("Roboto Mono"));
 
     qputenv("QML_XHR_ALLOW_FILE_READ", QByteArray("\1"));
-    QGuiApplication::setFont(QFont("Roboto Mono"));
 
     QQmlApplicationEngine engine;
     engine.setOutputWarningsToStandardError(true);

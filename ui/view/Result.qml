@@ -2,7 +2,6 @@ import QtCore
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import QtQuick.Controls.Basic
 
 Pane {
     id: rootPane
