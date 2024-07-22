@@ -2,8 +2,11 @@
 // Copyright 2024 Nazarii Moroz
 //
 
+#include <QFont>
+#include <QFontDatabase>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QQuickStyle>
 
 int main(int argc, char* argv[])
@@ -17,6 +20,9 @@ int main(int argc, char* argv[])
     while (it.hasNext()) {
         qDebug() << it.next();
     }*/
+
+    qputenv("QML_XHR_ALLOW_FILE_READ", QByteArray("\1"));
+    QGuiApplication::setFont(QFont("Roboto Mono"));
 
     QQmlApplicationEngine engine;
     engine.setOutputWarningsToStandardError(true);

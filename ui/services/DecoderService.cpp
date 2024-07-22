@@ -18,6 +18,21 @@ void DecoderService::decode()
     {
         filePath = m_filePath.toStdString();
     }
+    else
+    {
+        QFile defaultFile(ENCODED_FILE_NAME);
+        if(!defaultFile.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            emit error(defaultFile.errorString());
+            return;
+        }
+
+        QTextStream(&defaultFile) << m_encodedText;
+
+        defaultFile.close();
+
+        filePath = ENCODED_FILE_NAME;
+    }
 
     emit begin();
     std::unique_ptr<analyzer::Analyzer> decoder;

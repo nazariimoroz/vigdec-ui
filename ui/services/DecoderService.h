@@ -35,6 +35,8 @@ protected:
     bool m_filePathLoaded;
     QString m_encodedText;
     int m_heapSize;
+
+    const char* ENCODED_FILE_NAME = "encodedText.txt";
 };
 
 

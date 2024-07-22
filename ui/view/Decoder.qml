@@ -8,10 +8,24 @@ import VigdecUi
 
 Pane {
     id: rootPane
+
     property string filePath: ""
     property bool filePathLoaded: false
 
     property alias decoderService: _decoderService
+
+    function readFileContentIntoEncodedText() {
+        let xhr = new XMLHttpRequest;
+        let configaddress = "File:///" + filePath
+        xhr.open("GET", configaddress);
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                encodedText.text = xhr.responseText
+            }
+        };
+        xhr.overrideMimeType("text/plain; charset=x-user-defined");
+        xhr.send();
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -30,10 +44,11 @@ Pane {
 
                 TextArea {
                     id: encodedText
-                    textFormat: Text.MarkdownText
                     font.pointSize: 15
 
                     placeholderText: "Enter encoded text here..."
+
+                    readOnly: rootPane.filePathLoaded
                 }
             }
 
@@ -66,7 +81,6 @@ Pane {
                         anchors.verticalCenter: parent.verticalCenter
                         padding: 0
 
-                        textFormat: Text.MarkdownText
                         font.pointSize: 15
 
                         selectByMouse: true
@@ -125,6 +139,8 @@ Pane {
             const cleanPath = decodeURIComponent(path);
             rootPane.filePath = cleanPath;
             rootPane.filePathLoaded = true
+
+            rootPane.readFileContentIntoEncodedText()
         }
     }
 
