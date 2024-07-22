@@ -7,8 +7,9 @@ import QtQuick.Controls.Basic
 Pane {
     id: rootPane
 
-    signal viewResults(key: string, plaintext: string)
+    signal viewResults()
 
+    required property QtObject decoderService
     property bool finished: false
     property string key
     property string plaintext
@@ -19,6 +20,29 @@ Pane {
 
     function addError(error) {
         encodedText.text += "<font color=\"#9c1111\">" + error + "</font>";
+    }
+
+    Connections {
+        target: rootPane.decoderService
+
+        function onError(message) {
+            rootPane.addError(message)
+        }
+
+        function onEncodedFileLoaded() {
+            rootPane.addMessage("Encoded file was successfully loaded")
+        }
+
+        function onStatisticFileLoaded() {
+            rootPane.addMessage("Statistic files was successfully loaded")
+        }
+
+        function onDecoded(key, plaintext) {
+            rootPane.addMessage("Decoding was successfully completed")
+            rootPane.key = key
+            rootPane.plaintext = plaintext
+            rootPane.finished = true
+        }
     }
 
     ColumnLayout {
@@ -53,7 +77,7 @@ Pane {
 
             enabled: rootPane.finished
 
-            onClicked: rootPane.viewResults(rootPane.key, rootPane.plaintext)
+            onClicked: rootPane.viewResults()
         }
     }
 }

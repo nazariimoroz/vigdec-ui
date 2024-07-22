@@ -12,8 +12,6 @@ ApplicationWindow {
     title: "Vigenère decoder"
     visible: true
 
-    property alias decoder: mainStackView.initialItem
-
     header: ToolBar {
         RowLayout {
             anchors.fill: parent
@@ -46,19 +44,19 @@ ApplicationWindow {
         id: mainStackView
         anchors.fill: parent
 
-        initialItem: App.Decoder {
-            decoderService.onBegin: {
-                mainStackView.push(processingPageComponent)
-            }
-        }
+        initialItem: decoderPageComponent
     }
 
     Component {
         id: decoderPageComponent
 
         App.Decoder {
+            id: decoderRoot
+
             decoderService.onBegin: {
-                mainStackView.push(processingPageComponent)
+                StackView.view.push(processingPageComponent, {
+                    "decoderService": decoderRoot.decoderService
+                })
             }
         }
     }
@@ -67,33 +65,13 @@ ApplicationWindow {
         id: processingPageComponent
 
         App.Processing {
-            id: processing
+            id: processingRoot
 
-            onViewResults: (key, plaintext) => {
-                mainStackView.replace(resultPageComponent, {"key": key, "plaintext": plaintext})
-            }
-
-            Connections {
-                target: applicationWindow.decoder.decoderService
-
-                function onError(message) {
-                    processing.addError(message)
-                }
-
-                function onEncodedFileLoaded() {
-                    processing.addMessage("Encoded file was successfully loaded")
-                }
-
-                function onStatisticFileLoaded() {
-                    processing.addMessage("Statistic files was successfully loaded")
-                }
-
-                function onDecoded(key, plaintext) {
-                    processing.addMessage("Decoding was successfully completed")
-                    processing.key = key
-                    processing.plaintext = plaintext
-                    processing.finished = true
-                }
+            onViewResults: {
+                StackView.view.replace(resultPageComponent, {
+                    "key": processingRoot.key,
+                    "plaintext": processingRoot.plaintext
+                })
             }
         }
     }
