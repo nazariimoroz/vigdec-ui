@@ -116,6 +116,10 @@ Pane {
             text: "DECODE"
             font.pointSize: 18
 
+            enabled: encodedText.text.length > 0
+                && heapSizeTextField.text.length > 0
+                && parseInt(heapSizeTextField.text) > 0
+
             onClicked: decoderService.decode()
         }
     }
@@ -126,7 +130,7 @@ Pane {
         filePath: rootPane.filePath
         filePathLoaded: rootPane.filePathLoaded
         encodedText: encodedText.text
-        heapSize: heapSizeTextField.text
+        heapSize: parseInt(heapSizeTextField.text) ?? 100
     }
 
     FileDialog {
